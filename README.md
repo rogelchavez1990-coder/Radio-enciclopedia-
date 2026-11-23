@@ -11,7 +11,7 @@ a la web, la señal de radio, podcast, videos y redes, e información de contact
 
 > El APK firmado se publica en *Releases*. Los resultados de cada versión están en su ejecución de Actions;
 > los informes de versiones anteriores no acreditan la validación de una compilación nueva.
-> En este repositorio privado la clave de firma cifrada está en `signing/radio-release.jks` y la contraseña va en el secreto `KEY_PASSWORD`.
+> La clave de firma NO está en el repositorio: se guarda en los secretos de GitHub (`KEYSTORE_BASE64` y `KEY_PASSWORD`).
 
 ## Versión 1.9.1
 

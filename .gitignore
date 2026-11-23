@@ -12,7 +12,6 @@ keystore.properties
 *.jks
 *.keystore
 *.b64.txt
-!signing/radio-release.jks
 
 # Resultados locales
 dist/
