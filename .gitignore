@@ -1,0 +1,19 @@
+# Compilación
+build/
+.gradle/
+local.properties
+.idea/
+*.iml
+captures/
+.cxx/
+
+# SECRETOS: nunca subir la clave de firma ni sus contraseñas
+keystore.properties
+*.jks
+*.keystore
+*.b64.txt
+!signing/radio-release.jks
+
+# Resultados locales
+dist/
+resultados/

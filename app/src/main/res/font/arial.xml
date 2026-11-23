@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Arial no viene en Android. Se incluye Liberation Sans (licencia SIL OFL 1.1),
+     métricamente idéntica a Arial, para que la tipografía sea la misma en todos los fabricantes. -->
+<font-family xmlns:android="http://schemas.android.com/apk/res/android">
+    <font android:fontStyle="normal" android:fontWeight="400" android:font="@font/arial_regular" />
+    <font android:fontStyle="normal" android:fontWeight="700" android:font="@font/arial_bold" />
+</font-family>

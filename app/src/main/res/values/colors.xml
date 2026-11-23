@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Malva documentado en el CSS y el dossier; tonos oscuros de apoyo. -->
+    <color name="radio_purple">#9E5FA3</color>
+    <color name="radio_purple_dark">#6B2270</color>
+    <color name="radio_plum">#4A1450</color>
+    <color name="radio_plum_light">#5E1C63</color>
+    <color name="radio_plum_shadow">#2E0A33</color>
+    <color name="radio_pink">#CC66FF</color>
+    <color name="radio_white">#FFFFFF</color>
+    <color name="radio_text_soft">#F6E3F7</color>
+    <color name="ripple_white">#33FFFFFF</color>
+    <color name="ic_launcher_background">#FFFFFF</color>
+    <color name="radio_deep">#11091D</color>
+</resources>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Radio Enciclopedia</string>
+    <string name="station_name">Radio Enciclopedia</string>
+    <string name="station_tagline">una emisora para todos los momentos de la vida</string>
+
+    <!-- Botones del menú -->
+    <string name="btn_web">SITIO WEB</string>
+    <string name="btn_audio">AUDIO REAL EN INTERNET</string>
+    <string name="btn_podcast">PODCAST</string>
+    <string name="btn_videos">VIDEOS</string>
+    <string name="btn_facebook">FACEBOOK</string>
+    <string name="btn_x">X</string>
+    <string name="btn_telegram">TELEGRAM</string>
+    <string name="btn_instagram">INSTAGRAM</string>
+
+    <!-- Información institucional -->
+    <string name="contact_title">CONTACTO</string>
+    <string name="contact_station">CMBQ Radio Enciclopedia</string>
+    <string name="contact_address">Edificio ENE, calle N número 266, entre 21 y 23, Vedado, La Habana.</string>
+    <string name="contact_zip">Código postal: 10400.</string>
+    <string name="contact_director">Directora: Ing. Luisa María Márquez Echevarría.</string>
+    <string name="contact_phones">Teléfonos</string>
+    <string name="contact_email_label">Correo electrónico</string>
+    <string name="contact_email">radio.enciclo.62@gmail.com</string>
+
+    <!-- Descripciones de accesibilidad -->
+    <string name="cd_logo">Logotipo de Radio Enciclopedia</string>
+    <string name="cd_call">Llamar al %1$s</string>
+    <string name="cd_email">Enviar un correo a %1$s</string>
+    <string name="cd_open">Abrir %1$s</string>
+
+    <!-- Atajos del icono -->
+    <string name="sc_enciclopedia_short">Radio Enciclopedia</string>
+    <string name="sc_enciclopedia_long">Escuchar Radio Enciclopedia</string>
+    <string name="sc_progreso_short">Radio Progreso</string>
+    <string name="sc_progreso_long">Escuchar Radio Progreso</string>
+    <string name="sc_rebelde_short">Radio Rebelde AM</string>
+    <string name="sc_rebelde_long">Escuchar Radio Rebelde AM</string>
+    <string name="sc_coco_short">Radio COCO</string>
+    <string name="sc_coco_long">Escuchar Radio COCO</string>
+
+    <!-- Errores -->
+    <string name="error_no_browser">No se encontró ninguna aplicación para abrir este enlace.</string>
+    <string name="error_generic">No se pudo abrir el enlace.</string>
+    <string name="error_no_dialer">No se encontró ninguna aplicación de teléfono.</string>
+    <string name="error_no_mail">No se encontró ninguna aplicación de correo.</string>
+</resources>

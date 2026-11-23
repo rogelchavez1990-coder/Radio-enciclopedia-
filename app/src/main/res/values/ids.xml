@@ -1,0 +1,4 @@
+<resources>
+    <item name="music_ribbon" type="id" />
+    <item name="motion_anim" type="id" />
+</resources>
