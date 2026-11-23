@@ -1,0 +1,5 @@
+Tipografía incluida: Liberation Sans (Regular y Bold)
+Autor: Red Hat, Inc. / Liberation Fonts project
+Licencia: SIL Open Font License 1.1 (https://openfontlicense.org)
+Se usa como sustituto métricamente compatible de Arial, que no se distribuye con Android.
+La licencia permite incluirla en aplicaciones, incluso comerciales.

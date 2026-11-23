@@ -1,0 +1,151 @@
+name: Compilar y probar APK
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  compilar:
+    name: Compilar APK release firmado
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      # El runner ubuntu-latest ya trae el Android SDK (ANDROID_HOME). Solo nos aseguramos
+      # de tener la plataforma 35 y las build-tools 34.0.0.
+      - name: Preparar Android SDK
+        run: |
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          SDKM="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
+          yes | "$SDKM" --licenses > /dev/null || true
+          "$SDKM" "platforms;android-35" "build-tools;34.0.0" | tail -3
+          ls "$ANDROID_HOME/build-tools" "$ANDROID_HOME/platforms"
+
+      - name: Preparar clave de firma
+        env:
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          if [ -z "$KEY_PASSWORD" ]; then
+            echo "::error::Falta el secreto KEY_PASSWORD (Settings > Secrets and variables > Actions)."
+            exit 1
+          fi
+          test -f signing/radio-release.jks || { echo "::error::Falta signing/radio-release.jks"; exit 1; }
+          echo "RADIO_KEYSTORE_FILE=$GITHUB_WORKSPACE/signing/radio-release.jks" >> "$GITHUB_ENV"
+
+      - name: Compilar (assembleRelease)
+        env:
+          RADIO_KEYSTORE_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          RADIO_KEY_ALIAS: radioenciclopedia
+          RADIO_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon testDebugUnitTest assembleRelease
+          mkdir -p dist
+          cp app/build/outputs/apk/release/app-release.apk dist/Radio_Enciclopedia.apk
+
+      - name: Verificar APK (manifiesto, firma, alineación)
+        run: bash tools/verificar_apk.sh dist/Radio_Enciclopedia.apk | tee dist/verificacion_apk.txt
+
+      - name: Publicar APK
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apk
+          path: dist/
+          if-no-files-found: warn
+
+  publicar:
+    name: Publicar APK en Releases
+    needs: compilar
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: apk
+          path: dist
+      - name: Crear release con el APK
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "apk-${{ github.run_number }}" \
+            dist/Radio_Enciclopedia.apk dist/verificacion_apk.txt \
+            --repo "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" \
+            --title "Radio Enciclopedia APK (compilación ${{ github.run_number }})" \
+            --notes "APK release firmado, minSdk 28. Verificación en verificacion_apk.txt."
+
+  probar:
+    name: Probar en emulador (Android ${{ matrix.nombre }})
+    needs: compilar
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { api: 28, nombre: "9 (API 28)" }
+          - { api: 34, nombre: "14 (API 34)" }
+          - { api: 35, nombre: "15 (API 35)" }
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: apk
+          path: dist
+
+      - name: Habilitar KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Emulador y pruebas
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api }}
+          target: google_apis
+          arch: x86_64
+          disable-animations: true
+          script: |
+            timeout 1000 bash tools/probar_en_emulador.sh dist/Radio_Enciclopedia.apk resultados
+            timeout 300 bash tools/probar_radio_nativa.sh resultados/radio-nativa
+
+      - name: Publicar resultados y capturas
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pruebas-android-${{ matrix.api }}
+          path: resultados/
+
+  publicar-pruebas:
+    name: Adjuntar resultados de las pruebas al release
+    needs: [publicar, probar]
+    if: ${{ always() && needs.publicar.result == 'success' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: pruebas-android-*
+          path: pruebas
+      - name: Subir al release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p plano
+          for d in pruebas/*; do
+            api="${d#pruebas/pruebas-android-}"
+            for f in "$d"/*.png; do [ -f "$f" ] && cp "$f" "plano/$(basename "$f")"; done
+            [ -f "$d/prueba.txt" ] && cp "$d/prueba.txt" "plano/prueba_api${api}.txt"
+          done
+          ls -la plano
+          gh release upload "apk-${{ github.run_number }}" plano/* --repo "$GITHUB_REPOSITORY" --clobber

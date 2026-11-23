@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="coco"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/sc_coco_short"
+        android:shortcutLongLabel="@string/sc_coco_long">
+        <intent
+            android:action="cu.radioenciclopedia.TUNE"
+            android:targetPackage="cu.radioenciclopedia.app"
+            android:targetClass="cu.radioenciclopedia.app.MainActivity">
+            <extra android:name="emisora" android:value="coco" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="rebelde"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/sc_rebelde_short"
+        android:shortcutLongLabel="@string/sc_rebelde_long">
+        <intent
+            android:action="cu.radioenciclopedia.TUNE"
+            android:targetPackage="cu.radioenciclopedia.app"
+            android:targetClass="cu.radioenciclopedia.app.MainActivity">
+            <extra android:name="emisora" android:value="rebelde" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="progreso"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/sc_progreso_short"
+        android:shortcutLongLabel="@string/sc_progreso_long">
+        <intent
+            android:action="cu.radioenciclopedia.TUNE"
+            android:targetPackage="cu.radioenciclopedia.app"
+            android:targetClass="cu.radioenciclopedia.app.MainActivity">
+            <extra android:name="emisora" android:value="progreso" />
+        </intent>
+    </shortcut>
+    <shortcut
+        android:shortcutId="enciclopedia"
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutShortLabel="@string/sc_enciclopedia_short"
+        android:shortcutLongLabel="@string/sc_enciclopedia_long">
+        <intent
+            android:action="cu.radioenciclopedia.TUNE"
+            android:targetPackage="cu.radioenciclopedia.app"
+            android:targetClass="cu.radioenciclopedia.app.MainActivity">
+            <extra android:name="emisora" android:value="enciclopedia" />
+        </intent>
+    </shortcut>
+</shortcuts>
